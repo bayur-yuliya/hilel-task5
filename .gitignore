@@ -1,0 +1,9 @@
+task5/students/__pycache__
+task5/students/migrations/__pycache__
+task5/task5/__pycache__
+
+main.py
+output1.txt
+
+.idea
+venv
