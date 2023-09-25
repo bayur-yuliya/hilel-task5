@@ -1,9 +1,15 @@
 {%  extends 'students/base.html'  %}
 
 {%  block content  %}
+
 <body>
-    {% for el in data %}
-        <p>{{ el.first_name }}{{ el.last_name }} --- {{ el.birth_date }}</p>
-    {%  endfor  %}
+    <form method="GET" action="">
+        {% csrf_token %}
+
+        {% for el in data %}
+            <p>{{ el.first_name }}  {{ el.last_name }} --- {{ el.birth_date }}</p>
+        {%  endfor  %}
+    </form>
 </body>
+
 {%  endblock  %}
