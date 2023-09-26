@@ -8,10 +8,3 @@ def show_teachers(request):
 
     data = {"data": get_teacher_info}
     return render(request, "teachers/teachers.html", data)
-
-
-
-
-                        # fake error
-
-
