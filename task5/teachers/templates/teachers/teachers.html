@@ -1,0 +1,9 @@
+{%  extends "teachers/base.html"  %}
+
+{%  block content  %}
+
+    {%  for el in data %}
+        <div>{{el.id}}. {{el.name}} {{el.surname}} --- {{el.birth_date}}</div>
+    {%  endfor  %}
+
+{%  endblock  %}
