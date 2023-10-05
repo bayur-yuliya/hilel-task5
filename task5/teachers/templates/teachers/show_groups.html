@@ -1,0 +1,26 @@
+{%  extends "teachers/base.html"  %}
+
+{%  block content  %}
+
+<style type="text/css">
+body {
+    background:  #4d4d4d;
+}
+
+div {
+    color: #FFF;
+    font-size: 20px;
+    padding: 30px;
+}
+</style>
+
+<div>
+    {%  if data  %}
+        {%  for el in data %}
+            <p>{{el.id}}. {{el.curator}} --- группа:  {{el.group_name}} </p>
+        {%  endfor  %}
+    {%  else  %}
+        <p>No groups</p>
+    {%  endif  %}
+</div>
+{%  endblock  %}

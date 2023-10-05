@@ -1,0 +1,32 @@
+{%  extends "teachers/base.html"  %}
+
+{%  block content  %}
+
+<style type="text/css">
+body {
+    background:  #4d4d4d;
+}
+
+div {
+    color: #FFF;
+    font-size: 20px;
+    padding: 30px;
+}
+</style>
+
+<div>
+    {%  if data  %}
+        {%  for el in data %}
+            {%  if el.middle_name == 'Null' %}
+                <p>{{el.id}}. {{el.name}} {{el.surname}} --- {{el.birth_date}}</p>
+            {% else  %}
+                <p>{{el.id}}. {{el.name}} {{el.middle_name}} {{el.surname}} --- {{el.birth_date}}</p>
+            {%  endif  %}
+        {%  endfor  %}
+    {%  else  %}
+        <p>No teachers</p>
+    {%  endif  %}
+
+</div>
+
+{%  endblock  %}
