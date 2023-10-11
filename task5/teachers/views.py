@@ -1,44 +1,41 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
-from teachers.forms import TeacherForm, GroupForm
+from students.models import Student
+from teachers.forms import TeacherForm, GroupForm, StudentGroupForm
 from teachers.models import Teacher, Group
 
 
-def teachers(request):
-    if request.method == "POST":
-        teacher_form = TeacherForm(request.POST)
+def teacher(request):
+    if request.method == "GET":
+        form = TeacherForm()
+        return render(request, "teachers/teachers.html", {"form": form})
 
-        if teacher_form.is_valid():
-            name = teacher_form.cleaned_data["name"]
-            middle_name = "Null"
-            surname = teacher_form.cleaned_data["surname"]
-            birth_date = teacher_form.cleaned_data["birth_date"]
-            email = teacher_form.cleaned_data["email"]
-            subject = teacher_form.cleaned_data["subject"]
+    form = TeacherForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse("show_teachers"))
 
-            if teacher_form.cleaned_data["middle_name"]:
-                middle_name = teacher_form.cleaned_data["middle_name"]
 
-            Teacher.objects.create(
-                name=name,
-                surname=surname,
-                middle_name=middle_name,
-                birth_date=birth_date,
-                email=email,
-                subject=subject,
-            )
+def update_teacher(request, pk):
+    teacher = Teacher.objects.get(pk=pk)
 
-            return redirect("/teachers/")
-        else:
-            return HttpResponse("Invalid data")
+    if request.method == "GET":
+        form = TeacherForm(instance=teacher)
+        return render(request, "teachers/update_teacher.html", {"form": form})
 
-    teacher_form = TeacherForm()
+    form = TeacherForm(request.POST, instance=teacher)
 
-    form = {
-        "form": teacher_form,
-    }
-    return render(request, "teachers/teachers.html", form)
+    if request.POST.get("delete"):
+        teacher.delete()
+        return redirect(reverse("show_teachers"))
+
+    if form.is_valid():
+        form.save()
+        return redirect(reverse("show_teachers"))
+
+    return render(request, "teachers/update_teacher.html", {"form": form})
 
 
 def show_teachers(request):
@@ -52,23 +49,46 @@ def show_teachers(request):
 
 
 def group(request):
-    if request.method == "POST":
-        group_form = GroupForm(request.POST)
+    if request.method == "GET":
+        form = GroupForm()
+        return render(request, "teachers/groups.html", {"form": form})
 
-        if group_form.is_valid():
-            curator = group_form.cleaned_data["curator"]
-            group_name = group_form.cleaned_data["group_name"]
+    group_form = GroupForm(request.POST)
 
-            Group.objects.create(curator=curator, group_name=group_name)
+    if group_form.is_valid():
+        curator = group_form.cleaned_data["curator"]
+        group_name = group_form.cleaned_data["group_name"]
 
-            return redirect("/groups/")
-        else:
-            return HttpResponse("Invalid data")
+        Group.objects.create(curator=curator, group_name=group_name)
 
-    group_form = GroupForm()
-    form = {"form": group_form}
+        return redirect("/groups/")
+    else:
+        return HttpResponse("Invalid data")
 
-    return render(request, "teachers/groups.html", form)
+
+def add_student_in_group(request, pk):
+    student1 = get_object_or_404(Student, pk=pk)
+
+    if request.method == "GET":
+        form = StudentGroupForm(instance=student1)
+        return render(
+            request,
+            "teachers/add_student_in_group.html",
+            {"form": form, "student": student1},
+        )
+
+    form = StudentGroupForm(request.POST, instance=student1)
+    if form.is_valid():
+        form.save()
+        form.instance.group.clear()
+        form.instance.group.set(form.cleaned_data["group"])
+        return redirect(reverse("show_groups"))
+
+    return render(
+        request,
+        "teachers/add_student_in_group.html",
+        {"form": form, "student": student1},
+    )
 
 
 def show_groups(request):

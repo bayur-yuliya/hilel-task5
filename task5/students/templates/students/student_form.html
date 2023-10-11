@@ -1,8 +1,8 @@
-{%  extends "teachers/base.html"  %}
+{%  extends "students/base.html" %}
 
-{%  block title  %} Teacher form {%  endblock  %}
+{% block title %} Student form {%  endblock  %}
 
-{%  block content  %}
+{% block content  %}
 
 <style type="text/css">
 body {
@@ -23,10 +23,10 @@ form {
 }
 </style>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p  }}
-        <input type="submit" value="Send" >
-    </form>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p  }}
+    <input type="submit" value="Send">
+</form>
 
 {%  endblock  %}

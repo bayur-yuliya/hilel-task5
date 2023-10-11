@@ -22,5 +22,5 @@ from teachers import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("teachers.urls")),
-    path("student", include("students.urls")),
+    path("", include("students.urls")),
 ]
