@@ -1,8 +1,8 @@
-{%  extends "teachers/base.html"  %}
+{%  extends "teachers/base.html" %}
 
-{%  block title  %} Teacher form {%  endblock  %}
+{% block title %} Update teacher {%  endblock  %}
 
-{%  block content  %}
+{% block content  %}
 
 <style type="text/css">
 body {
@@ -27,6 +27,7 @@ form {
         {% csrf_token %}
         {{ form.as_p  }}
         <input type="submit" value="Send" >
+        <input type="submit" name="delete" value="Delete">
     </form>
 
 {%  endblock  %}

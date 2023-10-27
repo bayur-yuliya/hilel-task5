@@ -1,15 +1,42 @@
 {%  extends 'students/base.html'  %}
 
+{%  block title  %} Students list {%  endblock  %}
+
 {%  block content  %}
 
-<body>
-    <form method="GET" action="">
-        {% csrf_token %}
+<style type="text/css">
+body {
+    background: #2c2c2c;
+}
 
-        {% for el in data %}
-            <p>{{ el.first_name }}  {{ el.last_name }} --- {{ el.birth_date }}</p>
-        {%  endfor  %}
-    </form>
+div {
+    background: #4d4d4d;
+    text-align: left;
+    padding: 30px;
+    border: 5px solid #4d4d4d;
+    color: black;
+    font-size: 20px;
+    margin-left: 10px;
+    font-meight: bold;
+    position: relative;
+    top: 5px;
+}
+</style>
+
+<body>
+    <div>
+        {%  if data  %}
+            {% for student in data %}
+                <p>
+                <a href="{% url 'update_student' student.id %}">ID {{ student.id }}</a>
+                {{ student.first_name }}  {{ student.last_name }}. Birth date {{ student.birth_date }}. Year of admission: {{ student.year_of_admission }}
+                <a href="{% url 'add_student_in_group' student.id %}">Add group</a>
+                </p>
+            {%  endfor  %}
+        {%  else  %}
+            <p>No students</p>
+        {%  endif  %}
+    </div>
 </body>
 
 {%  endblock  %}
